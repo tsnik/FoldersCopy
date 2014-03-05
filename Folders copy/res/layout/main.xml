@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    style="@android:style/Theme.Light.NoTitleBar"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <Button
+        android:id="@+id/select_folder_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="@string/select_folder" />
+
+<com.mobclix.android.sdk.MobclixMMABannerXLAdView
+    android:id="@+id/advertising_banner_view"
+    android:layout_width="320dp"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:tag="adspace" >
+
+</com.mobclix.android.sdk.MobclixMMABannerXLAdView>
+
+</RelativeLayout>
