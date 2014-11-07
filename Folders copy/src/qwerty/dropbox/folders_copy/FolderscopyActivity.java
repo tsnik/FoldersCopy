@@ -13,10 +13,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.DropboxAPI.UploadRequest;
@@ -48,6 +52,12 @@ public class FolderscopyActivity extends Activity {
 	private static final int REQUEST_LOAD = 0;
     
     int REQUEST_SAVE=1;
+    
+    
+    Button start_btn;
+    TextView from_input;
+    TextView dest_input;
+    CheckBox overwrite_checkbox;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,25 +81,55 @@ public class FolderscopyActivity extends Activity {
      // MyActivity below should be your activity class name
         mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
         }
-        Button select_folder = (Button)findViewById(R.id.select_folder_button);
+        start_btn = (Button)findViewById(R.id.start_button);
+        from_input = (TextView)findViewById(R.id.from_input);
+        dest_input = (TextView)findViewById(R.id.dest_input);
+        overwrite_checkbox = (CheckBox)findViewById(R.id.overwrite_checkbox);
         
-        select_folder.setOnClickListener(new OnClickListener() {
+        from_input.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getBaseContext(), FileDialog.class);
-                intent.putExtra(FileDialog.START_PATH, "/sdcard");
-                
-                //can user select directories or not
-                intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
-                
-                //alternatively you can set file filter
-                //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
-                startActivityForResult(intent, REQUEST_SAVE);
+				OpenDialog();
+				
+			}
+		});
+        
+        from_input.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus)
+				{
+					OpenDialog();
+				}
+				
+			}
+		});
+        
+        start_btn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String filePath = (String) from_input.getText();
+                UploadFolderAsync upload= new UploadFolderAsync();
+                upload.execute(filePath);
 				
 			}
 		});
     }
+    
+    private void OpenDialog()
+    {
+    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        
+        startActivityForResult(intent, REQUEST_SAVE);
+    }
+    
     private AccessTokenPair getStoredKeys() {
     	SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
         return new AccessTokenPair(prefs.getString(ACCESS_KEY_NAME, "0"), prefs.getString(ACCESS_SECRET_NAME, "0"));
@@ -106,8 +146,8 @@ public class FolderscopyActivity extends Activity {
                     }
                     
                     String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
-                    UploadFolderAsync upload= new UploadFolderAsync();
-                    upload.execute(filePath);
+                    start_btn.setEnabled(filePath!="");
+                    from_input.setText(filePath);
             } else if (resultCode == Activity.RESULT_CANCELED) {
                     //Logger.getLogger(AccelerationChartRun.class.getName()).log(
                                     //Level.WARNING, "file not selected");
