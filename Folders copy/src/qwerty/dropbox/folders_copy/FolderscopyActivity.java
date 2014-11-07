@@ -31,10 +31,10 @@ import com.dropbox.client2.session.Session.AccessType;
 
 public class FolderscopyActivity extends Activity {
     /** Called when the activity is first created. */
-	final static private String APP_KEY = "wgxjdl4x80g2rcu";
-	final static private String APP_SECRET = "5qmi7hteqs2agne";
+	final static private String APP_KEY = "znstq6vnd5q250r";
+	final static private String APP_SECRET = "mk829kdx0bf3l3z";
 	
-	final static private AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
+	final static private AccessType ACCESS_TYPE = AccessType.DROPBOX;
 	
 	Context ctx=this;
 	
