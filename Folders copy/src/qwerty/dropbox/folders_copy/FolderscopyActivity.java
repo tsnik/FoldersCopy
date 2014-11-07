@@ -18,14 +18,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.DropboxAPI.UploadRequest;
-import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.DropboxAPI.Entry;
+import com.dropbox.client2.ProgressListener;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
@@ -91,7 +91,6 @@ public class FolderscopyActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				OpenDialog();
-				
 			}
 		});
         
