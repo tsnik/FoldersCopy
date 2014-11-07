@@ -60,6 +60,11 @@ public class FolderscopyActivity extends Activity {
         if(access.key!="0" && access.secret!="0")
         {
         mDBApi.getSession().setAccessTokenPair(access);
+        try {
+			mDBApi.accountInfo();
+		} catch (DropboxException e) {
+			mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
+		}
         }
         else
         {
