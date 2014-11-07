@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Folders copy</string>
-    <string name="select_folder">Select folder</string>
     <string name="location">Location</string>
     <string name="cant_read_folder">folder can\'t be read!</string>
     <string name="nnew">New</string>
@@ -13,4 +12,8 @@
     <color name="gray">#ffff0000</color>
     <string name="err">Error</string>
     <string name="Uploading_files">Uploading files</string>
+    <string name="from">From:</string>
+    <string name="dest">Folder in Dropbox</string>
+    <string name="start">Start</string>
+    <string name="overwrite">Overwrite</string>
 </resources>
