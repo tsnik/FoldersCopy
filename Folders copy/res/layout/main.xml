@@ -4,15 +4,8 @@
     style="@android:style/Theme.Light.NoTitleBar"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    
-    <Button
-        android:id="@+id/select_folder_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:text="@string/select_folder" />
+    android:orientation="vertical" 
+    android:focusableInTouchMode="true">
 
 <com.mobclix.android.sdk.MobclixMMABannerXLAdView
     android:id="@+id/advertising_banner_view"
@@ -23,5 +16,67 @@
     android:tag="adspace" >
 
 </com.mobclix.android.sdk.MobclixMMABannerXLAdView>
+
+<TextView
+    android:id="@+id/from_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/from_input"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="110dp"
+    android:text="@string/from" />
+
+<TextView
+    android:id="@+id/dest_label"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/from_input"
+    android:layout_below="@+id/from_input"
+    android:layout_marginTop="16dp"
+    android:text="@string/dest" />
+
+<Button
+    android:id="@+id/start_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_below="@+id/dest_input"
+    android:layout_marginTop="60dp"
+    android:enabled="false"
+    android:text="@string/start" />
+
+<TextView
+    android:id="@+id/dest_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_below="@+id/dest_label"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:ems="10"
+    android:focusableInTouchMode="true"
+    style="@android:style/Widget.EditText"
+    android:text="/" />
+
+<TextView
+    android:id="@+id/from_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/dest_input"
+    android:layout_alignParentLeft="true"
+    android:layout_below="@+id/from_label"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:ems="10"
+    android:focusableInTouchMode="true"
+    style="@android:style/Widget.EditText"/>
+
+<CheckBox
+    android:id="@+id/overwrite_checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/dest_input"
+    android:layout_below="@+id/dest_input"
+    android:text="@string/overwrite" />
 
 </RelativeLayout>
