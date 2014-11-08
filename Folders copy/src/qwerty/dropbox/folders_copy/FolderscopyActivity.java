@@ -32,26 +32,13 @@ import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
 import com.dropbox.client2.session.Session.AccessType;
+import qwerty.dropbox.folders_copy.DbApi;
 
 public class FolderscopyActivity extends Activity {
     /** Called when the activity is first created. */
-	final static private String APP_KEY = "znstq6vnd5q250r";
-	final static private String APP_SECRET = "mk829kdx0bf3l3z";
-	
-	final static private AccessType ACCESS_TYPE = AccessType.DROPBOX;
-	
+
 	Context ctx=this;
 	
-	// In the class declaration section:
-	private DropboxAPI<AndroidAuthSession> mDBApi;
-	
-	// You don't need to change these, leave them alone.
-    final static private String ACCOUNT_PREFS_NAME = "prefs";
-    final static private String ACCESS_KEY_NAME = "ACCESS_KEY";
-    final static private String ACCESS_SECRET_NAME = "ACCESS_SECRET";
-	private static final int REQUEST_LOAD = 0;
-    
-    int REQUEST_SAVE=1;
     
     
     Button start_btn;
@@ -62,24 +49,24 @@ public class FolderscopyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
-        AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
-        mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+        AppKeyPair appKeys = new AppKeyPair(DbApi.APP_KEY, DbApi.APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys,DbApi.ACCESS_TYPE);
+        DbApi.mDBApi = new DropboxAPI<AndroidAuthSession>(session);
         
         AccessTokenPair access = getStoredKeys();
         if(access.key!="0" && access.secret!="0")
         {
-        mDBApi.getSession().setAccessTokenPair(access);
+        DbApi.mDBApi.getSession().setAccessTokenPair(access);
         try {
-			mDBApi.accountInfo();
+			DbApi.mDBApi.accountInfo();
 		} catch (DropboxException e) {
-			mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
+			DbApi.mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
 		}
         }
         else
         {
      // MyActivity below should be your activity class name
-        mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
+        DbApi.mDBApi.getSession().startAuthentication(FolderscopyActivity.this);
         }
         start_btn = (Button)findViewById(R.id.start_button);
         from_input = (TextView)findViewById(R.id.from_input);
@@ -106,6 +93,27 @@ public class FolderscopyActivity extends Activity {
 			}
 		});
         
+        
+        dest_input.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				OpenDropboxDialog();
+			}
+		});
+        
+        dest_input.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus)
+				{
+					OpenDropboxDialog();
+				}
+				
+			}
+		});
+        
         start_btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -126,25 +134,42 @@ public class FolderscopyActivity extends Activity {
         //can user select directories or not
         intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
         
-        startActivityForResult(intent, REQUEST_SAVE);
+        startActivityForResult(intent, DbApi.REQUEST_SAVE);
+    }
+    
+    private void OpenDropboxDialog()
+    {
+    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, "/");
+        
+        //can user select directories or not
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+        intent.putExtra(FileDialog.IS_DROPBOX, true);
+        
+        startActivityForResult(intent, DbApi.REQUEST_Dropbox);
     }
     
     private AccessTokenPair getStoredKeys() {
-    	SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
-        return new AccessTokenPair(prefs.getString(ACCESS_KEY_NAME, "0"), prefs.getString(ACCESS_SECRET_NAME, "0"));
+    	SharedPreferences prefs = getSharedPreferences(DbApi.ACCOUNT_PREFS_NAME, 0);
+        return new AccessTokenPair(prefs.getString(DbApi.ACCESS_KEY_NAME, "0"), prefs.getString(DbApi.ACCESS_SECRET_NAME, "0"));
 	}
 	public synchronized void onActivityResult(final int requestCode,
             int resultCode, final Intent data) {
 
             if (resultCode == Activity.RESULT_OK) {
 
-                    if (requestCode == REQUEST_SAVE) {
+                    if (requestCode == DbApi.REQUEST_SAVE) {
                             System.out.println("Saving...");
-                    } else if (requestCode == REQUEST_LOAD) {
+                    } else if (requestCode == DbApi.REQUEST_LOAD) {
                             System.out.println("Loading...");
                     }
                     
                     String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+                    if(requestCode == DbApi.REQUEST_Dropbox)
+                    {
+                    	dest_input.setText(filePath);
+                    	return;
+                    }
                     start_btn.setEnabled(filePath!="");
                     from_input.setText(filePath);
             } else if (resultCode == Activity.RESULT_CANCELED) {
@@ -158,13 +183,13 @@ public class FolderscopyActivity extends Activity {
 
         // ...
 
-        if (mDBApi.getSession().authenticationSuccessful()) {
+        if (DbApi.mDBApi.getSession().authenticationSuccessful()) {
             try {
                 // MANDATORY call to complete auth.
                 // Sets the access token on the session
-                mDBApi.getSession().finishAuthentication();
+                DbApi.mDBApi.getSession().finishAuthentication();
 
-                AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
+                AccessTokenPair tokens = DbApi.mDBApi.getSession().getAccessTokenPair();
 
                 // Provide your own storeKeys to persist the access token pair
                 // A typical way to store tokens is using SharedPreferences
@@ -178,10 +203,10 @@ public class FolderscopyActivity extends Activity {
     }
     private void storeKeys(String key, String secret) {
     	// Save the access key for later
-        SharedPreferences prefs = getSharedPreferences(ACCOUNT_PREFS_NAME, 0);
+        SharedPreferences prefs = getSharedPreferences(DbApi.ACCOUNT_PREFS_NAME, 0);
         Editor edit = prefs.edit();
-        edit.putString(ACCESS_KEY_NAME, key);
-        edit.putString(ACCESS_SECRET_NAME, secret);
+        edit.putString(DbApi.ACCESS_KEY_NAME, key);
+        edit.putString(DbApi.ACCESS_SECRET_NAME, secret);
         edit.commit();
     }
     class UploadFolderAsync extends AsyncTask<String, Integer, String>
@@ -300,7 +325,7 @@ public class FolderscopyActivity extends Activity {
         	    File file = new File(Path_to_file);
         	    inputStream = new FileInputStream(file);
         	    publishProgress(2,(int)(file.length()/1024));
-        	    Entry newEntry=mDBApi.putFileOverwrite(Location, inputStream,
+        	    Entry newEntry=DbApi.mDBApi.putFileOverwrite(Location, inputStream,
         	            file.length(), new ProgressListener() {
 							
 							@Override
