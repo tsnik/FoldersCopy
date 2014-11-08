@@ -119,8 +119,9 @@ public class FolderscopyActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				String filePath = (String) from_input.getText();
+				String dropboxPath = (String) dest_input.getText();
                 UploadFolderAsync upload= new UploadFolderAsync();
-                upload.execute(filePath);
+                upload.execute(filePath, dropboxPath);
 				
 			}
 		});
@@ -213,6 +214,8 @@ public class FolderscopyActivity extends Activity {
     {
     	UploadFolderAsync ths=this;
     	DoubleProgressDialog pd = new DoubleProgressDialog(ctx);
+    	String dest_dir="/";
+    	
     	@Override
     	protected void onPostExecute(String result) {
 			pd.hide();
@@ -236,6 +239,7 @@ public class FolderscopyActivity extends Activity {
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
+			dest_dir=params[1];
 			File folder = new File(params[0]);
 			publishProgress(1,CountFiles(folder));
 			UploadFolder(params[0]);
@@ -325,7 +329,7 @@ public class FolderscopyActivity extends Activity {
         	    File file = new File(Path_to_file);
         	    inputStream = new FileInputStream(file);
         	    publishProgress(2,(int)(file.length()/1024));
-        	    Entry newEntry=DbApi.mDBApi.putFileOverwrite(Location, inputStream,
+        	    Entry newEntry=DbApi.mDBApi.putFileOverwrite(dest_dir+Location, inputStream,
         	            file.length(), new ProgressListener() {
 							
 							@Override
