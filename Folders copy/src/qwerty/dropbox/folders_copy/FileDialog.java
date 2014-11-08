@@ -86,13 +86,15 @@ public class FileDialog extends ListActivity {
 	private ArrayList<HashMap<String, Object>> mList;
 
 	private Button selectButton;
+	private Button cancelButton;
 
 	private LinearLayout layoutSelect;
 	private LinearLayout layoutCreate;
 	private InputMethodManager inputManager;
 	private String parentPath;
 	private String currentPath = ROOT;
-
+	private String startPath = ""; 
+	
 	private int selectionMode = SelectionMode.MODE_CREATE;
 
 	private String[] formatFilter = null;
@@ -130,6 +132,17 @@ public class FileDialog extends ListActivity {
 				}
 			}
 		});
+		
+		cancelButton = (Button) findViewById(R.id.fdButtonCancel);
+		cancelButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED, getIntent());
+				finish();
+				
+			}
+		});
 
 		selectionMode = getIntent().getIntExtra(SELECTION_MODE,
 				SelectionMode.MODE_CREATE);
@@ -144,7 +157,7 @@ public class FileDialog extends ListActivity {
 		layoutCreate = (LinearLayout) findViewById(R.id.fdLinearLayoutCreate);
 		layoutCreate.setVisibility(View.GONE);
 
-		String startPath = getIntent().getStringExtra(START_PATH);
+		startPath = getIntent().getStringExtra(START_PATH);
 		startPath = startPath != null ? startPath : ROOT;
 		if (isDropbox) {
 			getDropboxDir(startPath);
