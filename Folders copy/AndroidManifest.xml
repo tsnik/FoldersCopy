@@ -42,6 +42,7 @@
 			 android:theme="@android:style/Theme.Translucent.NoTitleBar"
               android:screenOrientation="portrait"
               android:configChanges="keyboard|keyboardHidden|orientation"/>
+      <activity android:name="PrefActivity"></activity>
       
     </application>
 

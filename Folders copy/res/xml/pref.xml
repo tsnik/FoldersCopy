@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:title="Default settings">
+    
+    <EditTextPreference
+ 	android:key="dest_folder"
+ 	android:summary="Folder where to save files in Dropbox"
+ 	android:title="Default Dropbox folder">
+	</EditTextPreference>
+	<CheckBoxPreference
+ 	android:key="overwrite"
+ 	android:summary="Overwrite existing files files in Dropbox"
+ 	android:title="Overwrite">
+	</CheckBoxPreference>
+
+</PreferenceScreen>
