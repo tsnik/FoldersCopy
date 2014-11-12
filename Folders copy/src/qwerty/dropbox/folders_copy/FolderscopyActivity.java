@@ -15,10 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -31,8 +32,6 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.AccessTokenPair;
 import com.dropbox.client2.session.AppKeyPair;
-import com.dropbox.client2.session.Session.AccessType;
-import qwerty.dropbox.folders_copy.DbApi;
 
 public class FolderscopyActivity extends Activity {
     /** Called when the activity is first created. */
@@ -201,6 +200,13 @@ public class FolderscopyActivity extends Activity {
         }
 
         // ...
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuItem mi = menu.add(0, 1, 0, "Preferences");
+    	mi.setIntent(new Intent(this, PrefActivity.class));
+    	return super.onCreateOptionsMenu(menu);
     }
     private void storeKeys(String key, String secret) {
     	// Save the access key for later
