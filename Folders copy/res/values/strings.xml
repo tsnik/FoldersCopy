@@ -16,4 +16,5 @@
     <string name="dest">Folder in Dropbox</string>
     <string name="start">Start</string>
     <string name="overwrite">Overwrite</string>
+    <string name="Pref">Preferences</string>
 </resources>

@@ -213,7 +213,7 @@ public class FolderscopyActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuItem mi = menu.add(0, 1, 0, "Preferences");
+		MenuItem mi = menu.add(0, 1, 0, getString(R.string.Pref));
 		mi.setIntent(new Intent(this, PrefActivity.class));
 		return super.onCreateOptionsMenu(menu);
 	}
