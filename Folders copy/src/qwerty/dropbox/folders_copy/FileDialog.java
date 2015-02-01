@@ -133,7 +133,7 @@ public class FileDialog extends ListActivity {
 		inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 		selectButton = (Button) findViewById(R.id.fdButtonSelect);
-		selectButton.setEnabled(false);
+		//selectButton.setEnabled(false);
 		selectButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -184,6 +184,7 @@ public class FileDialog extends ListActivity {
 
 		startPath = getIntent().getStringExtra(START_PATH);
 		startPath = startPath != null ? startPath : ROOT;
+		selectedFile=startPath;
 		if (isDropbox) {
 			getDropboxDir(startPath);
 			return;
