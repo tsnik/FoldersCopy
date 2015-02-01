@@ -12,8 +12,11 @@ import com.dropbox.client2.DropboxAPI.Entry;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,6 +83,10 @@ public class FileDialog extends ListActivity {
 
 	public static final String IS_DROPBOX = "IS_DROPBOX";
 
+	public static final String UPDATE_PREFERENCE = "UPDATE_PREFERENCE";
+
+	public static final String UPDATE_PREFERENCE_NAME = "UPDATE_PREFERENCE_NAME";
+
 	private List<String> path = null;
 	private TextView myPath;
 	private EditText mFileName;
@@ -93,14 +100,18 @@ public class FileDialog extends ListActivity {
 	private InputMethodManager inputManager;
 	private String parentPath;
 	private String currentPath = ROOT;
-	private String startPath = ""; 
-	
+	private String startPath = "";
+
 	private int selectionMode = SelectionMode.MODE_CREATE;
 
 	private String[] formatFilter = null;
 
 	private boolean canSelectDir = false;
 	private boolean isDropbox = false;
+	private boolean updatePref = false;
+	private String updatePrefName = "";
+
+	private Context ctx;
 
 	private String selectedFile;
 	private HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
@@ -112,6 +123,8 @@ public class FileDialog extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		ctx = this;
 		setResult(RESULT_CANCELED, getIntent());
 
 		setContentView(R.layout.file_dialog_main);
@@ -127,20 +140,28 @@ public class FileDialog extends ListActivity {
 			public void onClick(View v) {
 				if (selectedFile != null) {
 					getIntent().putExtra(RESULT_PATH, selectedFile);
+					if (updatePref) {
+						SharedPreferences sp = PreferenceManager
+								.getDefaultSharedPreferences(ctx);
+						sp.edit()
+						.putString(updatePrefName, selectedFile)
+						.commit();
+						
+					}
 					setResult(RESULT_OK, getIntent());
 					finish();
 				}
 			}
 		});
-		
+
 		cancelButton = (Button) findViewById(R.id.fdButtonCancel);
 		cancelButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				setResult(RESULT_CANCELED, getIntent());
 				finish();
-				
+
 			}
 		});
 
@@ -152,6 +173,10 @@ public class FileDialog extends ListActivity {
 		canSelectDir = getIntent().getBooleanExtra(CAN_SELECT_DIR, false);
 
 		isDropbox = getIntent().getBooleanExtra(IS_DROPBOX, false);
+
+		updatePref = getIntent().getBooleanExtra(UPDATE_PREFERENCE, false);
+
+		updatePrefName = getIntent().getStringExtra(UPDATE_PREFERENCE_NAME);
 
 		layoutSelect = (LinearLayout) findViewById(R.id.fdLinearLayoutSelect);
 		layoutCreate = (LinearLayout) findViewById(R.id.fdLinearLayoutCreate);
@@ -404,11 +429,11 @@ public class FileDialog extends ListActivity {
 			setSelectVisible(v);
 			selectButton.setEnabled(false);
 			lastPositions.put(currentPath, position);
-			selectedFile=path.get(position);
+			selectedFile = path.get(position);
 			getDropboxDir(path.get(position));
 			v.setSelected(true);
 			selectButton.setEnabled(true);
-			
+
 		} else {
 			File file = new File(path.get(position));
 
