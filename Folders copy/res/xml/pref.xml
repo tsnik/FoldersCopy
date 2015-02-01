@@ -6,18 +6,17 @@
     <qwerty.dropbox.folders_copy.DropboxFolderPreference
         android:key="dest_folder"
         android:summary="Folder where to save files in Dropbox"
-        android:title="Default Dropbox folder"
+        android:title="@string/dest"
         app:IsDropbox="true" />
 
     <CheckBoxPreference
         android:key="overwrite"
-        android:summary="Overwrite existing files files in Dropbox"
-        android:title="Overwrite" >
+        android:title="@string/overwrite" >
     </CheckBoxPreference>
-    
+
     <qwerty.dropbox.folders_copy.DropboxFolderPreference
         android:key="source_folder"
         android:summary="Folder where to save files in Dropbox"
-        android:title="Default source folder"/>
+        android:title="@string/from" />
 
 </PreferenceScreen>
