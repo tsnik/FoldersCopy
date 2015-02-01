@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.exception.DropboxServerException;
 import com.dropbox.client2.session.Session.AccessType;
 
 public class DbApi {
@@ -25,5 +27,22 @@ public class DbApi {
     
     public static final int REQUEST_SAVE=1;
     public static final int REQUEST_Dropbox=2;
+    
+    public static boolean IsFileExist(String path) throws DropboxException
+    {
+    	try
+    	{
+    		mDBApi.metadata(path, 1, null, false, null);
+    	}
+    	catch (DropboxServerException e)
+    	{
+    		if(e.error==404)
+    		{
+    			return false;
+    		}
+    		throw e;
+    	}
+    	return true;
+    }
 
 }

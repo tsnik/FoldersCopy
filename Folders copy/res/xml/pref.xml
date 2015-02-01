@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/qwerty.dropbox.folders_copy"
+    android:title="Default settings" >
+
+    <qwerty.dropbox.folders_copy.DropboxFolderPreference
+        android:key="dest_folder"
+        android:summary="Folder where to save files in Dropbox"
+        android:title="Default Dropbox folder"
+        app:IsDropbox="true" />
+
+    <CheckBoxPreference
+        android:key="overwrite"
+        android:summary="Overwrite existing files files in Dropbox"
+        android:title="Overwrite" >
+    </CheckBoxPreference>
+    
+    <qwerty.dropbox.folders_copy.DropboxFolderPreference
+        android:key="source_folder"
+        android:summary="Folder where to save files in Dropbox"
+        android:title="Default source folder"/>
+
+</PreferenceScreen>
