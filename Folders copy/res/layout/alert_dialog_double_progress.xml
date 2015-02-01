@@ -33,6 +33,7 @@
             android:layout_marginRight="10dip"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/progress"
+            android:textColor="@android:color/white"
         />
         <TextView
             android:id="@+id/progress_number"
@@ -43,6 +44,7 @@
             android:layout_marginRight="15dip"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/progress"
+            android:textColor="@android:color/white"
         />
     <ProgressBar android:id="@+id/secondaryProgress"
         style="?android:attr/progressBarStyleHorizontal"
@@ -63,6 +65,7 @@
         android:layout_marginRight="10dip"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/secondaryProgress"
+        android:textColor="@android:color/white"
     />
     <TextView
         android:id="@+id/secondary_progress_number"
@@ -73,5 +76,6 @@
         android:layout_marginRight="15dip"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/secondaryProgress"
+        android:textColor="@android:color/white"
     />
 </RelativeLayout>
